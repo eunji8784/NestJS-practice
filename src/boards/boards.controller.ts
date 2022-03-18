@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { Board } from './board.model';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { Board, BoardStatus } from './board.model';
 import { BoardsService } from './boards.service';
+import { CreateBoardDto } from './dto/create-board.dto';
 
 @Controller('boards')
 export class BoardsController {
@@ -11,12 +20,15 @@ export class BoardsController {
     return this.boardsService.getAllBoards();
   }
 
+  @Get('/:id')
+  getBoardById(@Param('id') id: string): Board {
+    //(@Param() param[]: string[]) //params를 여러 개 받았을 경우
+    return this.boardsService.getBoardById(id);
+  }
+
   @Post()
-  createBoard(
-    @Body('title') title: string,
-    @Body('description') description: string,
-  ): Board {
-    return this.boardsService.createBoard(title, description);
+  createBoard(@Body() createBoardDto: CreateBoardDto): Board {
+    return this.boardsService.createBoard(createBoardDto);
   }
 
   // body를 일괄적으로 받고 싶을 경우
@@ -24,4 +36,17 @@ export class BoardsController {
   //   createBoard(@Body() body) {
   //     console.log('body', body);
   //   }
+
+  @Delete('/:id')
+  deleteBoard(@Param('id') id: string): void {
+    this.boardsService.deleteBoard(id);
+  }
+
+  @Patch('/:id/status')
+  updateBoardStatus(
+    @Param('id') id: string,
+    @Body('status') status: BoardStatus,
+  ): Board {
+    return this.boardsService.updateBoardStatus(id, status);
+  }
 }
