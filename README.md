@@ -74,3 +74,5 @@ Nest is [MIT licensed](LICENSE).
 
 ## 참고
 + class-validator Documentation page: https://github.com/typestack/class-validator/#manual-validation
++ https://docs.nestjs.com/
++ https://typeorm.io/#/
