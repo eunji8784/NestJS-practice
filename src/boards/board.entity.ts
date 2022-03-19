@@ -14,4 +14,7 @@ export class Board extends BaseEntity {
 
   @Column()
   status: BoardStatus;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  created_at: string;
 }
