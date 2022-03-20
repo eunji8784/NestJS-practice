@@ -9,7 +9,9 @@ import * as bcrypt from 'bcryptjs';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async createUser(authCredentialDto: AuthCredentialDto): Promise<void> {
+  async createUser(
+    authCredentialDto: AuthCredentialDto,
+  ): Promise<{ user: User }> {
     const { username, password } = authCredentialDto;
 
     // 비밀번호 암호화
@@ -19,6 +21,7 @@ export class UserRepository extends Repository<User> {
 
     try {
       await this.save(user);
+      return { user };
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException('Existing username');
